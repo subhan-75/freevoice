@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { VoiceConfig, User, PageType } from './types';
-import { VOICE_PRESETS } from './constants';
+import { VOICE_PRESETS, MASTER_EMAILS } from './constants';
 import { syncUserWithHF } from './services/huggingFaceApi';
 
 import Navbar from './components/Navbar';
@@ -38,8 +38,6 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
 const STORAGE_KEY = 'free_voice_selected_id';
 const LEGAL_ACCEPTED_KEY = 'free_voice_legal_protocol_accepted';
-const MASTER_EMAIL = 'subhanfreefire76@gmail.com','azanebilal123456@gmail.com';
-
 
 const App: React.FC = () => {
   const [activePage, setActivePage] = useState<PageType>('HOME');
@@ -69,7 +67,8 @@ const App: React.FC = () => {
   });
 
   const syncWithNeuralBrain = async (userId: string, email: string) => {
-    if (email.toLowerCase() === MASTER_EMAIL.toLowerCase()) {
+    const isMaster = MASTER_EMAILS.includes(email.toLowerCase());
+    if (isMaster) {
       setIsPro(true);
       setUser(prev => prev ? { ...prev, proExpiry: 253370764800000 } : null);
       setSyncStatus('IDLE');
@@ -139,7 +138,8 @@ const App: React.FC = () => {
   };
 
   const onSelectVoice = (voice: VoiceConfig) => {
-    const hasProPrivileges = isPro || (user?.email.toLowerCase() === MASTER_EMAIL);
+    const isMaster = user?.email && MASTER_EMAILS.includes(user.email.toLowerCase());
+    const hasProPrivileges = isPro || isMaster;
     if (voice.isPremium && !hasProPrivileges) { 
       setShowUpgradeModal(true); 
       return; 
