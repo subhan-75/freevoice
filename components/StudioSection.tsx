@@ -2,7 +2,7 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 import React, { useState, useRef } from 'react';
 import { VoiceConfig, User } from '../types';
-import { AUDIO_SAMPLE_RATE_OUTPUT } from '../constants';
+import { AUDIO_SAMPLE_RATE_OUTPUT, MASTER_EMAILS } from '../constants';
 import { blobToBase64, decodeBase64, createWavBlob } from '../services/audioUtils';
 import { NEURAL_CORE_STUDIO, NEURAL_CORE_SYNTHESIS } from '../services/geminiConfig';
 
@@ -28,8 +28,8 @@ const StudioSection: React.FC<StudioSectionProps> = ({ selectedVoice, setErrorMe
   const chunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<number | null>(null);
 
-  const MASTER_EMAIL = 'subhanfreefire76@gmail.com';
-  const hasProPrivileges = isPro || (user?.email.toLowerCase() === MASTER_EMAIL);
+  const isMaster = user?.email && MASTER_EMAILS.includes(user.email.toLowerCase());
+  const hasProPrivileges = isPro || isMaster;
 
   const startRecording = async () => {
     try {
