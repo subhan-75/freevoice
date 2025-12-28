@@ -5,6 +5,7 @@ import { VoiceConfig, ConnectionStatus, User } from '../types';
 import Visualizer from './Visualizer';
 import { encodeBase64, decodeBase64 } from '../services/audioUtils';
 import { NEURAL_CORE_LIVE } from '../services/geminiConfig';
+import { MASTER_EMAILS } from '../constants';
 
 interface RealTimeSectionProps {
   selectedVoice: VoiceConfig;
@@ -41,8 +42,8 @@ const RealTimeSection: React.FC<RealTimeSectionProps> = ({
   const activeSourcesRef = useRef<Set<AudioBufferSourceNode>>(new Set());
   const wakeLockRef = useRef<any>(null);
 
-  const MASTER_EMAIL = 'subhanfreefire76@gmail.com';
-  const hasProPrivileges = isPro || (user?.email.toLowerCase() === MASTER_EMAIL);
+  const isMaster = user?.email && MASTER_EMAILS.includes(user.email.toLowerCase());
+  const hasProPrivileges = isPro || isMaster;
 
   useEffect(() => {
     refreshDevices();
