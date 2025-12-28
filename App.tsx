@@ -38,7 +38,8 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
 const STORAGE_KEY = 'free_voice_selected_id';
 const LEGAL_ACCEPTED_KEY = 'free_voice_legal_protocol_accepted';
-const MASTER_EMAIL = 'subhanfreefire76@gmail.com' , 'anazebilal123456@gmail.com';
+const MASTER_EMAIL = 'subhanfreefire76@gmail.com';
+const MASTER_EMAIL = 'azanebilal123456@gmail.com';
 
 const App: React.FC = () => {
   const [activePage, setActivePage] = useState<PageType>('HOME');
